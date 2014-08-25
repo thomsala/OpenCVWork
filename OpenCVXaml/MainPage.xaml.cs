@@ -94,52 +94,52 @@ namespace OpenCVXaml
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            pumpARGBFrames = true;
+          //  pumpARGBFrames = true;
 
 
           //  ARGBFramesThread = new System.Threading.Thread(PumpARGBFrames);
 
 
-            bitmap = new WriteableBitmap((int)cam.PreviewResolution.Width, (int)cam.PreviewResolution.Height);
+           // bitmap = new WriteableBitmap((int)cam.PreviewResolution.Width, (int)cam.PreviewResolution.Height);
            // this.MainImage.Source = wb;
 
             // Start pump.
            // ARGBFramesThread.Start();
-            PumpARGBFrames();           
-            //if (Preview.Source != null)
-            //{
-            //    ProcessButton.IsEnabled = false;
+            //PumpARGBFrames();           
+            if (Preview.Source != null)
+            {
+                ProcessButton.IsEnabled = false;
                 
-            //    // Get WriteableBitmap. ImageToModify is defined in MainPage.xaml
-            //    WriteableBitmap bitmap = new WriteableBitmap(Preview.Source as BitmapSource);
+                // Get WriteableBitmap. ImageToModify is defined in MainPage.xaml
+                WriteableBitmap bitmap = new WriteableBitmap(Preview.Source as BitmapSource);
 
-            //    // call OpenCVLib to convert pixels to grayscale. This is an asynchronous call.
-            //   // var pixels =  await m_opencv.ProcessAsync(bitmap.Pixels, bitmap.PixelWidth, bitmap.PixelHeight);
-            //    var positions = await m_opencv.FindPositionAsync(bitmap.Pixels, bitmap.PixelWidth, bitmap.PixelHeight);
-            //    var pixels = await m_opencv.FindRedAsync(bitmap.Pixels, bitmap.PixelWidth, bitmap.PixelHeight);
+                // call OpenCVLib to convert pixels to grayscale. This is an asynchronous call.
+               // var pixels =  await m_opencv.ProcessAsync(bitmap.Pixels, bitmap.PixelWidth, bitmap.PixelHeight);
+                var positions = await m_opencv.FindPositionAsync(bitmap.Pixels, bitmap.PixelWidth, bitmap.PixelHeight);
+                var pixels = await m_opencv.FindRedAsync(bitmap.Pixels, bitmap.PixelWidth, bitmap.PixelHeight);
 
-            //    // copy the pixels into the WriteableBitmap
-            //    for (int x = 0; x < bitmap.Pixels.Length; x++)
-            //    {
-            //        bitmap.Pixels[x] = pixels[x];
-            //    }
-
-
-            //    // Set Image object, defined in XAML, to the modified bitmap.
-            //    Preview.Source = bitmap;
+                // copy the pixels into the WriteableBitmap
+                for (int x = 0; x < bitmap.Pixels.Length; x++)
+                {
+                    bitmap.Pixels[x] = pixels[x];
+                }
 
 
-            //    Rectangle rect = new Rectangle();
-            //    rect.Fill = new SolidColorBrush(Colors.Green);
-            //    rect.StrokeThickness = 2.0;
-            //    rect.Width = 30;
-            //    rect.Height = 30;
-            //    Canvas.SetLeft(rect, positions[0]);
-            //    Canvas.SetTop(rect, positions[1]);
-            //    canvas.Children.Add(rect);
+                // Set Image object, defined in XAML, to the modified bitmap.
+                Preview.Source = bitmap;
 
-            //    ProcessButton.IsEnabled = true;
-            //}
+
+                Rectangle rect = new Rectangle();
+                rect.Fill = new SolidColorBrush(Colors.Green);
+                rect.StrokeThickness = 2.0;
+                rect.Width = 30;
+                rect.Height = 30;
+                Canvas.SetLeft(rect, positions[0]);
+                Canvas.SetTop(rect, positions[1]);
+                canvas.Children.Add(rect);
+
+                ProcessButton.IsEnabled = true;
+            }
         }
 
         public static WriteableBitmap WriteableBitmapCrop(WriteableBitmap wbSource, Int32 offsetX, Int32 offsetY, Int32 outWidth, Int32 outHeight)
